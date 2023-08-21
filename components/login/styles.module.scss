@@ -1,0 +1,29 @@
+.login {
+  padding: 30px 40px;
+  background-color: #bb9457;
+  border-radius: 40px;
+  form {
+    display: flex;
+    flex-direction: column;
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    gap: 20px;
+    label {
+      font-size: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      color: #fff;
+    }
+    button {
+      padding: 10px;
+      font-size: 2rem;
+      background-color: #99582a;
+      color: #fff;
+      border-radius: 40px;
+    }
+  }
+}

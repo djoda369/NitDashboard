@@ -1,0 +1,220 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgb(126, 115, 136);
+  padding: 10px;
+  border-radius: 20px;
+  gap: 2rem;
+  position: relative;
+  .delete__container {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(128, 128, 128, 0.301);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .message {
+      background-color: #845ef7;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 2rem 3rem;
+      svg {
+        width: 100px;
+        height: 100px;
+        fill: #dbf302;
+      }
+      p {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      p {
+        font-size: 2rem;
+        color: #d60b0b;
+        font-weight: 700;
+      }
+      span {
+        color: #fff;
+        font-size: 2rem;
+        font-weight: 400;
+      }
+      .btn__container {
+        display: flex;
+        gap: 1rem;
+        button {
+          padding: 1rem 2rem;
+          font-size: 1.8rem;
+          color: #fff;
+          cursor: pointer;
+        }
+        .cancel {
+          background-color: #8f8f8f;
+        }
+        .delete {
+          background-color: #d60b0b;
+          &:hover {
+            background-color: #910808;
+          }
+        }
+      }
+    }
+  }
+
+  .card {
+    width: 100%;
+
+    display: flex;
+    // align-items: center;
+    // gap: 2rem;
+    justify-content: space-between;
+    .icons {
+      display: flex;
+      // height: 100%;
+      justify-content: center;
+      align-items: center;
+      // font-size: 2rem;
+      svg {
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        position: relative;
+        fill: #845ef7;
+        &:hover {
+          fill: #4b358d;
+        }
+      }
+      .delete {
+        fill: #8f8f8f;
+        &:hover {
+          fill: #d60b0b;
+        }
+      }
+    }
+    &__img {
+      width: 150px;
+      height: 100px;
+      object-fit: cover;
+      // scale: (1.5);
+    }
+    &__imgVertical {
+      width: 150px;
+      height: 225px;
+      object-fit: cover;
+    }
+    .product__desc {
+      display: flex;
+      // flex-direction: column;
+      gap: 2rem;
+      align-items: center;
+      span {
+        font-size: 3rem;
+        width: 160px;
+      }
+    }
+
+    .values {
+      display: flex;
+      gap: 2rem;
+      padding-right: 40px;
+      // width: 62%;
+      .text {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        justify-content: space-between;
+        .id {
+          width: 200px;
+          text-align: center;
+          // background-color: red;
+        }
+        .kategorija {
+          width: 240px;
+          // background-color: red;
+          text-align: center;
+        }
+        .cena {
+          // width: 10%;
+          width: 150px;
+        }
+        span {
+          text-align: right;
+          font-size: 2rem;
+          position: relative;
+        }
+      }
+      &__text {
+        display: flex;
+        // gap: 2rem;
+        // flex-direction: column;
+        justify-content: space-between;
+
+        div {
+          display: flex;
+          // flex-direction: column;
+          gap: 0.6rem;
+          justify-content: flex-end;
+          align-items: center;
+
+          label {
+            font-size: 1.8em;
+            text-align: left;
+            font-weight: 700;
+          }
+          input {
+            font-size: 1.8rem;
+            width: auto;
+            text-align: center;
+            // width: 50%;
+          }
+          input[type="checkbox"] {
+            width: auto;
+          }
+          select {
+            font-size: 1.8rem;
+            width: 100%;
+            text-align: center;
+            // width: 100%;
+          }
+        }
+      }
+    }
+    .btn {
+      display: flex;
+      justify-content: flex-end;
+      button {
+        font-size: 1.8rem;
+        padding: 1rem 2rem;
+      }
+    }
+  }
+  .other {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    .delete {
+      background-color: rgb(250, 0, 0);
+      &:hover {
+        background-color: #910808;
+        cursor: pointer;
+      }
+    }
+    button {
+      font-size: 2rem;
+      padding: 1rem 2rem;
+      border-radius: 20px;
+      background-color: #845ef7;
+      color: #fff;
+      &:hover {
+        background-color: #4b358d;
+        cursor: pointer;
+      }
+    }
+  }
+}
