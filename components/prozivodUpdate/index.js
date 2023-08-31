@@ -16,6 +16,7 @@ export default function Proizvod({ cathegories, card }) {
     ...card,
     mainImage: card.images[0],
   });
+  console.log(product);
   const [isFeatured, setIsFeatured] = useState(product.featured);
   const [exclusive, setExclusive] = useState(product.exclusive);
   const [limited, setLimited] = useState(product.limited);
@@ -91,7 +92,7 @@ export default function Proizvod({ cathegories, card }) {
     const newValue = event.target.checked;
     setIsFeatured(newValue);
     setProduct((prevState) => {
-      return { ...prevState, isFeatured: newValue };
+      return { ...prevState, featured: newValue };
     });
   };
   const handleExclusiveChange = (event) => {

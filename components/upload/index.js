@@ -36,6 +36,9 @@ const emptyProduct = {
 const manShoeSizes = ["41", "42", "43", "44", "45", "46", "47"];
 const womenShoeSizes = ["36", "37", "38", "39", "40", "41"];
 const wardrobeSizes = ["S", "M", "L", "XL", "XXL"];
+const AccesoriesSizes = ["S", "M", "L", "XL"];
+const socksSizesM = ["41-43", "44-46"];
+const socksSizesF = ["35-38", "39-42"];
 
 export default function UploadMain({ cathegories }) {
   const [prozivod, setProzivod] = useState(emptyProduct);
@@ -55,6 +58,7 @@ export default function UploadMain({ cathegories }) {
   const [error, setError] = useState("");
   const [viewError, setViewError] = useState(false);
   const [succes, setSucces] = useState(false);
+  const [acces, setAcces] = useState(false);
 
   const handleVrstaChange = (event) => {
     const value = event.target.value;
@@ -120,7 +124,6 @@ export default function UploadMain({ cathegories }) {
       setProzivod((prevstate) => {
         return {
           ...prevstate,
-          sizes: [],
           gender: "male",
         };
       });
@@ -165,6 +168,27 @@ export default function UploadMain({ cathegories }) {
 
   const handleCategoryChange = (event) => {
     const value = event.target.value;
+    if (
+      value === "64e3cee960336e389e83887d" ||
+      value === "64e3cee960336e389e83887f"
+    ) {
+      setProzivod((prevstate) => {
+        return {
+          ...prevstate,
+          category: value,
+          sizes: AccesoriesSizes,
+        };
+      });
+    }
+    if (value === "64e3cee960336e389e83887e") {
+      setAcces(true);
+      setProzivod((prevstate) => {
+        return {
+          ...prevstate,
+          category: value,
+        };
+      });
+    }
     setProzivod((prevstate) => {
       return {
         ...prevstate,
@@ -246,6 +270,29 @@ export default function UploadMain({ cathegories }) {
         featured: value,
       };
     });
+  };
+  const handleGenderChange = (event) => {
+    const value = event.target.value;
+    if (prozivod.category === "64e3cee960336e389e83887e") {
+      if (value === "male") {
+        setProzivod((prevstate) => {
+          return {
+            ...prevstate,
+            gender: value,
+            sizes: socksSizesM,
+          };
+        });
+      }
+      if (value === "female") {
+        setProzivod((prevstate) => {
+          return {
+            ...prevstate,
+            gender: value,
+            sizes: socksSizesF,
+          };
+        });
+      }
+    }
   };
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
@@ -408,6 +455,7 @@ export default function UploadMain({ cathegories }) {
       setError(error.response.data.message);
     }
   };
+  console.log(prozivod);
   return (
     <div className={classes.upload}>
       {succes && (
@@ -477,6 +525,19 @@ export default function UploadMain({ cathegories }) {
                 />
               </div>
               <div className={`${classes.info__materijal} `}>
+                {acces && (
+                  <div>
+                    <label>Pol</label>
+                    <select
+                      value={prozivod.gender}
+                      onChange={handleGenderChange}
+                    >
+                      <option className={classes.hidden}></option>
+                      <option value="male">Muški</option>
+                      <option value="female">Ženski</option>
+                    </select>
+                  </div>
+                )}
                 {odeca && (
                   <div className={classes.last}>
                     <label>Materijal</label>
@@ -488,6 +549,7 @@ export default function UploadMain({ cathegories }) {
                     />
                   </div>
                 )}
+
                 {obuca && (
                   <div>
                     <label>Đon</label>
@@ -652,12 +714,44 @@ export default function UploadMain({ cathegories }) {
                     </div>
                   )}
                   <ul>
-                    {files.map((file) => {
+                    {files.map((file, i) => {
+                      if (i === 0) {
+                        return (
+                          <li
+                            className={classes.img__container}
+                            key={file.name}
+                          >
+                            <div className={classes.close}>
+                              <AiFillCloseCircle
+                                onClick={() => removeFile(file.name)}
+                              />
+                            </div>
+
+                            <div className={classes.save}>
+                              <RiCheckboxBlankFill />
+                            </div>
+                            <Image
+                              src={file.preview}
+                              alt=""
+                              width={100}
+                              height={150}
+                              onClick={() => setBigImage(file.preview)}
+                            />
+                          </li>
+                        );
+                      }
                       return (
                         <li className={classes.img__container} key={file.name}>
-                          <AiFillCloseCircle
-                            onClick={() => removeFile(file.name)}
-                          />
+                          <div className={classes.close}>
+                            <AiFillCloseCircle
+                              onClick={() => removeFile(file.name)}
+                            />
+                          </div>
+                          <div className={classes.save}>
+                            <RiCheckboxBlankLine
+                              onClick={() => handelMainImage(file)}
+                            />
+                          </div>
                           <Image
                             src={file.preview}
                             alt=""

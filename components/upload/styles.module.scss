@@ -161,6 +161,10 @@
             }
             .close {
               position: absolute;
+              svg {
+                width: 30px;
+                height: 30px;
+              }
               width: 30px;
               height: 30px;
               right: 5px;
