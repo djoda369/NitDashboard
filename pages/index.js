@@ -18,7 +18,6 @@ export default function Home() {
     <>
       <Head>
         <title>Nit Dashboard</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={classes.main}>
         {/* <Navbar /> */}
