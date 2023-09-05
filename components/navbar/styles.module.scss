@@ -1,7 +1,7 @@
 .nav {
   width: 15%;
   height: 100%;
-  background-color: #e3fafc;
+  background-color: $background;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,7 +37,7 @@
         gap: 3rem;
         p {
           width: 100%;
-          background-color: #845ef7;
+          background-color: $background;
           color: #fff;
           font-size: 2rem;
           text-align: center;
@@ -56,11 +56,11 @@
       padding: 10px 24px;
       font-size: 24px;
       border-radius: 30px;
-      background-color: #845ef7;
+      background-color: #4b358d;
       color: #fff;
       &:hover {
         cursor: pointer;
-        background-color: #4b358d;
+        background-color: #3b5bdb;
       }
     }
   }
