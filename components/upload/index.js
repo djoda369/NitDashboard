@@ -1,8 +1,8 @@
 import classes from "./styles.module.scss";
 import { useCallback, useEffect, useState } from "react";
-import { useDropzone } from "react-dropzone";
+// import { useDropzone } from "react-dropzone";
 import Image from "next/image";
-import { BsPlusSquare } from "react-icons/bs";
+// import { BsPlusSquare } from "react-icons/bs";
 import { AiFillCloseCircle } from "react-icons/ai";
 import axios from "axios";
 import { SpinnerCircular } from "spinners-react";
@@ -44,7 +44,6 @@ const socksSizesF = ["35-38", "39-42"];
 export default function UploadMain({ cathegories }) {
   const [prozivod, setProzivod] = useState(emptyProduct);
   const [cloudinaryImages, setCloudinaryImages] = useState([]);
-  console.log(cloudinaryImages);
   const [vrsta, setVrsta] = useState("");
   const [obuca, setObuca] = useState(false);
   const [odeca, setOdeca] = useState(false);
@@ -54,16 +53,14 @@ export default function UploadMain({ cathegories }) {
   const [imageLoading, setImageLoading] = useState(false);
   const [showImage, setShowImages] = useState(false);
   const [enableSave, setEnableSave] = useState(false);
-  const [files, setFiles] = useState([]);
-  const [rejected, setRejected] = useState([]);
+  // const [files, setFiles] = useState([]);
+  // const [rejected, setRejected] = useState([]);
   const [bigImage, setBigImage] = useState();
   const [selectedCategories, setSelectedCategories] = useState(cathegories);
   const [error, setError] = useState("");
-  const [viewError, setViewError] = useState(false);
+  const [viewError, setViewError] = useState(true);
   const [succes, setSucces] = useState(false);
   const [acces, setAcces] = useState(false);
-
-  useEffect(() => {}, [cloudinaryImages]);
 
   const handleVrstaChange = (event) => {
     const value = event.target.value;
@@ -155,10 +152,10 @@ export default function UploadMain({ cathegories }) {
   };
 
   const handelMainImage = (name) => {
-    const stariNiz = files.filter((product) => product !== name);
+    const stariNiz = cloudinaryImages.filter((product) => product !== name);
     const noviNiz = [name, ...stariNiz];
-    setFiles(noviNiz);
-    setBigImage(name.preview);
+    setCloudinaryImages(noviNiz);
+    setBigImage(name);
   };
 
   const handleDescriptionChange = (event) => {
@@ -300,94 +297,116 @@ export default function UploadMain({ cathegories }) {
     }
   };
 
-  const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
-    if (acceptedFiles?.length) {
-      setFiles((previousFiles) => [
-        ...previousFiles,
-        ...acceptedFiles.map((file) =>
-          Object.assign(file, { preview: URL.createObjectURL(file) })
-        ),
-      ]);
-      setShowImages(true);
-    }
+  // const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
+  //   if (acceptedFiles?.length) {
+  //     setFiles((previousFiles) => [
+  //       ...previousFiles,
+  //       ...acceptedFiles.map((file) =>
+  //         Object.assign(file, { preview: URL.createObjectURL(file) })
+  //       ),
+  //     ]);
+  //     setShowImages(true);
+  //   }
 
-    if (rejectedFiles?.length) {
-      setRejected((previousFiles) => [...previousFiles, ...rejectedFiles]);
-      setImageFailError(
-        `Maksimalna veličina slike je 10 MB! ${rejectedFiles.length} slike nisu podržane.`
-      );
-      setImageFail(true);
-    }
-  }, []);
+  //   if (rejectedFiles?.length) {
+  //     setRejected((previousFiles) => [...previousFiles, ...rejectedFiles]);
+  //     setImageFailError(
+  //       `Maksimalna veličina slike je 10 MB! ${rejectedFiles.length} slike nisu podržane.`
+  //     );
+  //     setImageFail(true);
+  //   }
+  // }, []);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: {
-      "image/png": [".png"],
-      "image/jpeg": [".jpeg"],
-      "image/jpg": [".jpg"],
-      "image/webp": [".webp"],
-    },
-    maxSize: 1024 * 1024 * 10,
-    maxFiles: 4,
-    onDrop,
-  });
+  // const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  //   accept: {
+  //     "image/png": [".png"],
+  //     "image/jpeg": [".jpeg"],
+  //     "image/jpg": [".jpg"],
+  //     "image/webp": [".webp"],
+  //   },
+  //   maxSize: 1024 * 1024 * 10,
+  //   maxFiles: 4,
+  //   onDrop,
+  // });
 
-  const removeFile = (name) => {
-    setFiles((files) => files.filter((file) => file.name !== name));
+  const removeFile = (indexToRemove) => {
+    setCloudinaryImages((images) =>
+      images.filter((_, index) => index !== indexToRemove)
+    );
   };
 
-  const handleUpload = async (e) => {
-    e.preventDefault();
-    setImageLoading(true);
+  // const handleUpload = async (e) => {
+  //   e.preventDefault();
+  //   setImageLoading(true);
 
-    if (files.length < 1) {
+  //   if (files.length < 1) {
+  //     setImageFail(true);
+  //     setImageFailError("Došlo je do greške! Pokušajte ponovo.");
+  //     setImageLoading(false);
+  //     return;
+  //   }
+
+  //   if (prozivod.images.length >= 1) {
+  //     setProzivod((prevstate) => {
+  //       return {
+  //         ...prevstate,
+  //         images: [],
+  //       };
+  //     });
+  //   }
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("path", prozivod.tip);
+  //     for (let i = 0; i < files.length; i++) {
+  //       formData.append("files", files[i]);
+  //     }
+
+  //     const response = await axios.post("/api/cloudinary", formData, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     });
+
+  //     response.data.map((response) => {
+  //       prozivod.images.push(response.url);
+  //     });
+  //     setProzivod((prevstate) => {
+  //       return {
+  //         ...prevstate,
+  //         mainImage: response.data[0].url,
+  //       };
+  //     });
+  //     setRejected([]);
+  //     setImageFail(false);
+  //     setImageSucces(true);
+  //     setEnableSave(true);
+  //     setImageLoading(false);
+  //   } catch (error) {
+  //     console.log("Upload error:", error);
+  //   }
+  // };
+
+  const saveImages = (e) => {
+    e.preventDefault();
+
+    if (cloudinaryImages.length === 0) {
       setImageFail(true);
       setImageFailError("Došlo je do greške! Pokušajte ponovo.");
-      setImageLoading(false);
+      console.log("OVO");
+      console.log(imageFail);
       return;
     }
 
-    if (prozivod.images.length >= 1) {
-      setProzivod((prevstate) => {
-        return {
-          ...prevstate,
-          images: [],
-        };
-      });
-    }
-    try {
-      const formData = new FormData();
-      formData.append("path", prozivod.tip);
-      for (let i = 0; i < files.length; i++) {
-        formData.append("files", files[i]);
-      }
-
-      const response = await axios.post("/api/cloudinary", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      // console.log("Upload response:", response.data);
-      // console.log(prozivod);
-
-      response.data.map((response) => {
-        prozivod.images.push(response.url);
-      });
-      setProzivod((prevstate) => {
-        return {
-          ...prevstate,
-          mainImage: response.data[0].url,
-        };
-      });
-      setRejected([]);
-      setImageFail(false);
-      setImageSucces(true);
-      setEnableSave(true);
-      setImageLoading(false);
-    } catch (error) {
-      console.log("Upload error:", error);
-    }
+    setProzivod((prevstate) => {
+      return {
+        ...prevstate,
+        images: cloudinaryImages,
+      };
+    });
+    setImageFail(false);
+    setImageSucces(true);
+    setViewError(false);
+    setEnableSave(true);
   };
 
   const handleUploadProduct = async (e) => {
@@ -446,7 +465,7 @@ export default function UploadMain({ cathegories }) {
       });
       setViewError(false);
       setBigImage();
-      setFiles([]);
+      setCloudinaryImages([]);
       setImageSucces(false);
       setEnableSave(false);
       setError("");
@@ -460,7 +479,7 @@ export default function UploadMain({ cathegories }) {
       setError(error.response.data.message);
     }
   };
-  console.log(prozivod);
+
   return (
     <div className={classes.upload}>
       {succes && (
@@ -640,10 +659,10 @@ export default function UploadMain({ cathegories }) {
                     {cloudinaryImages.map((file, i) => {
                       if (i === 0) {
                         return (
-                          <li key={file.name}>
+                          <li key={i}>
                             <AiFillCloseCircle
                               className={classes.close}
-                              onClick={() => removeFile(file.name)}
+                              onClick={() => removeFile(i)}
                             />
                             <div className={classes.save}>
                               <RiCheckboxBlankFill />
@@ -660,10 +679,10 @@ export default function UploadMain({ cathegories }) {
                         );
                       }
                       return (
-                        <li key={file.name}>
+                        <li key={i}>
                           <AiFillCloseCircle
                             className={classes.close}
-                            onClick={() => removeFile(file.name)}
+                            onClick={() => removeFile(i)}
                           />
                           <div className={classes.save}>
                             <RiCheckboxBlankLine
@@ -684,7 +703,9 @@ export default function UploadMain({ cathegories }) {
                   <SpinnerCircular />
                 </div>
               )}
+
               <CldUploadButton
+                className={classes.containerBtn}
                 uploadPreset="fjxgm0ta"
                 onUpload={(result, widget) => {
                   console.log(result);
@@ -693,10 +714,12 @@ export default function UploadMain({ cathegories }) {
                     result.info.url,
                   ]);
                   setBigImage(cloudinaryImages[0]);
-                  // console.log(widget);
+                  setShowImages(true);
+                  setImageFail(false);
                 }}
               />
-              <div {...getRootProps({})} className={classes.drop}>
+
+              {/* <div {...getRootProps({})} className={classes.drop}>
                 <input {...getInputProps()} />
                 <div>
                   <BsPlusSquare />
@@ -706,8 +729,8 @@ export default function UploadMain({ cathegories }) {
                     <p>Drag & drop files here, or click to select files</p>
                   )}
                 </div>
-              </div>
-              <button className={classes.save__imgs} onClick={handleUpload}>
+              </div> */}
+              <button className={classes.save__imgs} onClick={saveImages}>
                 Sačuvaj slike
               </button>
             </div>
@@ -717,6 +740,12 @@ export default function UploadMain({ cathegories }) {
               <h1>
                 <span>Slike</span>
                 {imageSucces && <BsFillCheckCircleFill />}
+                {imageFail && (
+                  <div>
+                    <p>{imageFailEror}</p>
+                    <BiSolidErrorCircle className={classes.fail__Img} />
+                  </div>
+                )}
               </h1>
               {!imageLoading && (
                 <div className={classes.imgs}>
@@ -726,7 +755,7 @@ export default function UploadMain({ cathegories }) {
                     </div>
                   )}
                   <ul>
-                    {files.map((file, i) => {
+                    {cloudinaryImages.map((file, i) => {
                       if (i === 0) {
                         return (
                           <li
@@ -735,7 +764,7 @@ export default function UploadMain({ cathegories }) {
                           >
                             <div className={classes.close}>
                               <AiFillCloseCircle
-                                onClick={() => removeFile(file.name)}
+                                onClick={() => removeFile(i)}
                               />
                             </div>
 
@@ -743,11 +772,11 @@ export default function UploadMain({ cathegories }) {
                               <RiCheckboxBlankFill />
                             </div>
                             <Image
-                              src={file.preview}
+                              src={file}
                               alt=""
                               width={100}
                               height={150}
-                              onClick={() => setBigImage(file.preview)}
+                              onClick={() => setBigImage(file)}
                             />
                           </li>
                         );
@@ -755,9 +784,7 @@ export default function UploadMain({ cathegories }) {
                       return (
                         <li className={classes.img__container} key={file.name}>
                           <div className={classes.close}>
-                            <AiFillCloseCircle
-                              onClick={() => removeFile(file.name)}
-                            />
+                            <AiFillCloseCircle onClick={() => removeFile(i)} />
                           </div>
                           <div className={classes.save}>
                             <RiCheckboxBlankLine
@@ -765,11 +792,11 @@ export default function UploadMain({ cathegories }) {
                             />
                           </div>
                           <Image
-                            src={file.preview}
+                            src={file}
                             alt=""
                             width={100}
                             height={150}
-                            onClick={() => setBigImage(file.preview)}
+                            onClick={() => setBigImage(file)}
                           />
                         </li>
                       );
@@ -782,7 +809,7 @@ export default function UploadMain({ cathegories }) {
                   <SpinnerCircular />
                 </div>
               )}
-              <div {...getRootProps({})} className={classes.drop}>
+              {/* <div {...getRootProps({})} className={classes.drop}>
                 <input {...getInputProps()} />
                 <div>
                   <BsPlusSquare />
@@ -792,8 +819,24 @@ export default function UploadMain({ cathegories }) {
                     <p>Drag & drop files here, or click to select files</p>
                   )}
                 </div>
-              </div>
-              <button className={classes.save__imgs} onClick={handleUpload}>
+              </div> */}
+
+              <CldUploadButton
+                className={classes.containerBtn}
+                uploadPreset="fjxgm0ta"
+                onUpload={(result) => {
+                  console.log(result);
+                  setCloudinaryImages((prevstate) => [
+                    ...prevstate,
+                    result.info.url,
+                  ]);
+                  setBigImage(cloudinaryImages[0]);
+                  setShowImages(true);
+                  setImageFail(false);
+                }}
+              />
+
+              <button className={classes.save__imgs} onClick={saveImages}>
                 Sačuvaj slike
               </button>
             </div>

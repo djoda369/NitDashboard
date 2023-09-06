@@ -57,6 +57,18 @@
     // justify-content: center;
     // align-items: flex-end;
     width: 100%;
+    .saveBtn {
+      margin-top: 2rem;
+      padding: 1rem 2rem;
+      font-size: 2rem;
+      border-radius: 20px;
+      background-color: #845ef7;
+      color: #fff;
+      cursor: pointer;
+      &:hover {
+        background-color: #4b358d;
+      }
+    }
     .upload__images {
       // width: 40%;
       display: flex;

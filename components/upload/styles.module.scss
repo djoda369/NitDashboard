@@ -123,6 +123,23 @@
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
+      .containerBtn {
+        width: 100%;
+        border: 1px dashed gray;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.4rem;
+        padding: 1rem;
+        gap: 1rem;
+        .uploadBtn {
+          background-color: #fff;
+          // width: 100%;
+          cursor: pointer;
+        }
+      }
+
       .save__imgs {
         width: 100%;
         background-color: #845ef7;

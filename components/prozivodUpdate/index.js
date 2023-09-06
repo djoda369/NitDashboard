@@ -2,14 +2,15 @@ import classes from "./styles.module.scss";
 import { useState, useCallback } from "react";
 import Image from "next/image";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { useDropzone } from "react-dropzone";
-import { BsPlusSquare } from "react-icons/bs";
+// import { useDropzone } from "react-dropzone";
+// import { BsPlusSquare } from "react-icons/bs";
 import axios from "axios";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { BiSolidErrorCircle } from "react-icons/bi";
 import { RiCheckboxBlankLine, RiCheckboxBlankFill } from "react-icons/ri";
 import { SpinnerCircular } from "spinners-react";
 import { useRouter } from "next/router";
+import { CldUploadButton } from "next-cloudinary";
 
 export default function Proizvod({ cathegories, card }) {
   const [product, setProduct] = useState({
@@ -17,18 +18,22 @@ export default function Proizvod({ cathegories, card }) {
     mainImage: card.images[0],
   });
   console.log(product);
+  const [allImages, setAllImages] = useState(product.images);
+  console.log(allImages);
   const [isFeatured, setIsFeatured] = useState(product.featured);
   const [exclusive, setExclusive] = useState(product.exclusive);
   const [limited, setLimited] = useState(product.limited);
-  const [files, setFiles] = useState([]);
+  // const [files, setFiles] = useState([]);
   const [imageError, setImageError] = useState();
   const [showImageError, setShowImageError] = useState(false);
   const [saveImagesLoading, setSaveImagesLoading] = useState(false);
-  const [rejected, setRejected] = useState([]);
+  const [cloudinaryImages, setCloudinaryImages] = useState([]);
+  // const [rejected, setRejected] = useState([]);
   const [succes, setSucces] = useState(false);
-  const uploadImages = product.images.length < 4;
-  const countImages = product.images.length + files.length <= 4;
-  const showImageButton = files.length >= 1;
+  const uploadImages = allImages.length < 4;
+  const countImages = allImages <= 4;
+  const [showImageButton, setShowImageButton] = useState(false);
+
   const router = useRouter();
   const horizontal = card.tip === "zenska-obuca" || card.tip === "muska-obuca";
   const vertikal =
@@ -161,8 +166,9 @@ export default function Proizvod({ cathegories, card }) {
     });
   };
   const handleImageRemove = (name) => {
-    const images = product.images;
-    const newImages = images.filter((image) => image !== name);
+    allImages;
+    const newImages = allImages.filter((image) => image !== name);
+    setAllImages(newImages);
 
     setProduct((prevstate) => {
       return {
@@ -171,12 +177,33 @@ export default function Proizvod({ cathegories, card }) {
       };
     });
   };
-  const removeFile = (name) => {
-    setFiles((files) => files.filter((file) => file.name !== name));
+
+  const removeFile = (indexToRemove) => {
+    setCloudinaryImages((images) =>
+      images.filter((_, index) => index !== indexToRemove)
+    );
   };
+
+  const saveImages = (e) => {
+    e.preventDefault();
+
+    setProduct((prevstate) => {
+      return {
+        ...prevstate,
+        images: allImages,
+      };
+    });
+    setShowImageError(false);
+    setImageError("");
+    setSaveImagesLoading(false);
+    setCloudinaryImages([]);
+    setShowImageButton(false);
+  };
+
   const handelMainImage = (name) => {
-    const stariNiz = product.images.filter((product) => product !== name);
+    const stariNiz = allImages.filter((product) => product !== name);
     const noviNiz = [name, ...stariNiz];
+    setAllImages(noviNiz);
     setProduct((prevstate) => {
       return {
         ...prevstate,
@@ -186,88 +213,88 @@ export default function Proizvod({ cathegories, card }) {
     });
   };
 
-  const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
-    if (acceptedFiles?.length) {
-      setFiles((previousFiles) => [
-        ...previousFiles,
-        ...acceptedFiles.map((file) =>
-          Object.assign(file, { preview: URL.createObjectURL(file) })
-        ),
-      ]);
-    }
+  // const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
+  //   if (acceptedFiles?.length) {
+  //     setFiles((previousFiles) => [
+  //       ...previousFiles,
+  //       ...acceptedFiles.map((file) =>
+  //         Object.assign(file, { preview: URL.createObjectURL(file) })
+  //       ),
+  //     ]);
+  //   }
 
-    if (rejectedFiles?.length) {
-      setRejected((previousFiles) => [...previousFiles, ...rejectedFiles]);
-      setShowImageError(true);
-      setImageError(
-        `Maksimalna veličina slike je 10 MB! ${rejectedFiles.length} slike nisu podržane.`
-      );
-    }
-  }, []);
+  //   if (rejectedFiles?.length) {
+  //     setRejected((previousFiles) => [...previousFiles, ...rejectedFiles]);
+  //     setShowImageError(true);
+  //     setImageError(
+  //       `Maksimalna veličina slike je 10 MB! ${rejectedFiles.length} slike nisu podržane.`
+  //     );
+  //   }
+  // }, []);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: {
-      "image/png": [".png"],
-      "image/jpeg": [".jpeg"],
-      "image/jpg": [".jpg"],
-      "image/webp": [".webp"],
-    },
-    maxSize: 1024 * 1024 * 10,
-    maxFiles: 4,
-    onDrop,
-  });
+  // const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  //   accept: {
+  //     "image/png": [".png"],
+  //     "image/jpeg": [".jpeg"],
+  //     "image/jpg": [".jpg"],
+  //     "image/webp": [".webp"],
+  //   },
+  //   maxSize: 1024 * 1024 * 10,
+  //   maxFiles: 4,
+  //   onDrop,
+  // });
 
-  const handleUpload = async (e) => {
-    e.preventDefault();
-    setSaveImagesLoading(true);
+  // const handleUpload = async (e) => {
+  //   e.preventDefault();
+  //   setSaveImagesLoading(true);
 
-    if (files.length < 1) {
-      // setImageFail(true);
-      // setImageFailError("Došlo je do greške! Pokušajte ponovo.");
-      // setImageLoading(false);
-      setShowImageError(true);
-      setImageError("Nema Izabranih slika!");
-      setSaveImagesLoading(false);
-      return;
-    }
+  //   if (files.length < 1) {
+  //     // setImageFail(true);
+  //     // setImageFailError("Došlo je do greške! Pokušajte ponovo.");
+  //     // setImageLoading(false);
+  //     setShowImageError(true);
+  //     setImageError("Nema Izabranih slika!");
+  //     setSaveImagesLoading(false);
+  //     return;
+  //   }
 
-    if (product.images.length === 4) {
-      setShowImageError(true);
-      setImageError("Maksimalno 4 slike po proizvodu!");
-      setSaveImagesLoading(false);
-      return;
-    }
+  //   if (product.images.length === 4) {
+  //     setShowImageError(true);
+  //     setImageError("Maksimalno 4 slike po proizvodu!");
+  //     setSaveImagesLoading(false);
+  //     return;
+  //   }
 
-    if (!countImages) {
-      setShowImageError(true);
-      setImageError("Maksimalno 4 slike po proizvodu!");
-      setSaveImagesLoading(false);
-      return;
-    }
+  //   if (!countImages) {
+  //     setShowImageError(true);
+  //     setImageError("Maksimalno 4 slike po proizvodu!");
+  //     setSaveImagesLoading(false);
+  //     return;
+  //   }
 
-    try {
-      const formData = new FormData();
-      formData.append("path", product.tip);
-      for (let i = 0; i < files.length; i++) {
-        formData.append("files", files[i]);
-      }
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("path", product.tip);
+  //     for (let i = 0; i < files.length; i++) {
+  //       formData.append("files", files[i]);
+  //     }
 
-      const response = await axios.post("/api/cloudinary", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      response.data.map((response) => {
-        product.images.push(response.url);
-      });
-      setShowImageError(false);
-      setImageError("");
-      setSaveImagesLoading(false);
-      setFiles([]);
-    } catch (error) {
-      console.log("Upload error:", error);
-    }
-  };
+  //     const response = await axios.post("/api/cloudinary", formData, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     });
+  //     response.data.map((response) => {
+  //       product.images.push(response.url);
+  //     });
+  //     setShowImageError(false);
+  //     setImageError("");
+  //     setSaveImagesLoading(false);
+  //     setFiles([]);
+  //   } catch (error) {
+  //     console.log("Upload error:", error);
+  //   }
+  // };
 
   const handleSaveChanges = async () => {
     if (product.images.length < 1) {
@@ -284,10 +311,8 @@ export default function Proizvod({ cathegories, card }) {
         router.back();
       }, 1500);
       console.log(response.data);
-      // Ovde možete dodati dodatne akcije nakon što su izmene sačuvane
     } catch (error) {
       console.error("Error saving changes:", error);
-      // Obrada greške prilikom čuvanja izmena
     }
   };
   return (
@@ -306,7 +331,7 @@ export default function Proizvod({ cathegories, card }) {
         </div>
         <div className={`${classes.big__img}`}>
           <Image
-            src={product.images[0]}
+            src={allImages[0]}
             width={600}
             height={400}
             alt="big Image"
@@ -315,7 +340,7 @@ export default function Proizvod({ cathegories, card }) {
         </div>
         <div className={classes.images}>
           <ul>
-            {product.images.map((img, i) => {
+            {allImages.map((img, i) => {
               if (i === 0) {
                 return (
                   <li
@@ -371,7 +396,7 @@ export default function Proizvod({ cathegories, card }) {
                   vertikal ? `${classes.vertical}` : `${classes.horizontal}`
                 }
               >
-                <div {...getRootProps({})} className={classes.drop}>
+                {/* <div {...getRootProps({})} className={classes.drop}>
                   <input {...getInputProps()} />
                   <div>
                     {isDragActive ? (
@@ -380,7 +405,22 @@ export default function Proizvod({ cathegories, card }) {
                       <BsPlusSquare />
                     )}
                   </div>
-                </div>
+                </div> */}
+
+                <CldUploadButton
+                  className={classes.drop}
+                  uploadPreset="fjxgm0ta"
+                  onUpload={(result, widget) => {
+                    setCloudinaryImages((prevstate) => [
+                      ...prevstate,
+                      result.info.url,
+                    ]);
+                    setAllImages((prevstate) => {
+                      return [...prevstate, result.info.url];
+                    });
+                    setShowImageButton(true);
+                  }}
+                />
               </li>
             )}
           </ul>
@@ -390,19 +430,12 @@ export default function Proizvod({ cathegories, card }) {
             <div className={classes.upload__images_show}>
               {!saveImagesLoading && (
                 <ul>
-                  {files.map((file) => {
+                  {cloudinaryImages.map((file, i) => {
                     return (
                       <li className={classes.img__container} key={file.name}>
-                        <AiFillCloseCircle
-                          onClick={() => removeFile(file.name)}
-                        />
+                        <AiFillCloseCircle onClick={() => removeFile(i)} />
 
-                        <Image
-                          src={file.preview}
-                          alt=""
-                          width={150}
-                          height={100}
-                        />
+                        <Image src={file} alt="" width={150} height={100} />
                       </li>
                     );
                   })}
@@ -416,12 +449,6 @@ export default function Proizvod({ cathegories, card }) {
               )}
             </div>
 
-            {showImageButton && (
-              <button className={classes.save__imgs} onClick={handleUpload}>
-                Sačuvaj slike
-              </button>
-            )}
-
             {showImageError && (
               <p className={classes.error}>
                 <BiSolidErrorCircle />
@@ -429,6 +456,11 @@ export default function Proizvod({ cathegories, card }) {
               </p>
             )}
           </div>
+        )}
+        {showImageButton && (
+          <button className={classes.saveBtn} onClick={saveImages}>
+            Sačuvaj slike
+          </button>
         )}
       </div>
       <div className={classes.info}>
