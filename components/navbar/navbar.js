@@ -31,7 +31,7 @@ export default function Navbar() {
       <div className={classes.container}>
         <div className={classes.options}>
           {/* <span>NitNis</span> */}
-          <img src="../../logo/NitLogo2.1.png" alt="logo" />
+          <img src="../../logo/NitLogoSmall.png" alt="logo" />
           <div className={classes.options__links}>
             <Link href="/dashboard">
               <p style={dashboardActive ? { backgroundColor: "#4b358d" } : {}}>
