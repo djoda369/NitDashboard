@@ -9,6 +9,7 @@ import { SpinnerCircular } from "spinners-react";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { BiSolidErrorCircle } from "react-icons/bi";
 import { RiCheckboxBlankLine, RiCheckboxBlankFill } from "react-icons/ri";
+import { CldUploadButton } from "next-cloudinary";
 
 const emptyProduct = {
   name: "",
@@ -42,6 +43,8 @@ const socksSizesF = ["35-38", "39-42"];
 
 export default function UploadMain({ cathegories }) {
   const [prozivod, setProzivod] = useState(emptyProduct);
+  const [cloudinaryImages, setCloudinaryImages] = useState([]);
+  console.log(cloudinaryImages);
   const [vrsta, setVrsta] = useState("");
   const [obuca, setObuca] = useState(false);
   const [odeca, setOdeca] = useState(false);
@@ -59,6 +62,8 @@ export default function UploadMain({ cathegories }) {
   const [viewError, setViewError] = useState(false);
   const [succes, setSucces] = useState(false);
   const [acces, setAcces] = useState(false);
+
+  useEffect(() => {}, [cloudinaryImages]);
 
   const handleVrstaChange = (event) => {
     const value = event.target.value;
@@ -632,7 +637,7 @@ export default function UploadMain({ cathegories }) {
                     </div>
                   )}
                   <ul>
-                    {files.map((file, i) => {
+                    {cloudinaryImages.map((file, i) => {
                       if (i === 0) {
                         return (
                           <li key={file.name}>
@@ -645,7 +650,7 @@ export default function UploadMain({ cathegories }) {
                             </div>
                             <div className={classes.small__img}>
                               <Image
-                                src={file.preview}
+                                src={file}
                                 alt=""
                                 width={200}
                                 height={133}
@@ -666,12 +671,7 @@ export default function UploadMain({ cathegories }) {
                             />
                           </div>
                           <div className={classes.small__img}>
-                            <Image
-                              src={file.preview}
-                              alt=""
-                              width={200}
-                              height={133}
-                            />
+                            <Image src={file} alt="" width={200} height={133} />
                           </div>
                         </li>
                       );
@@ -684,6 +684,18 @@ export default function UploadMain({ cathegories }) {
                   <SpinnerCircular />
                 </div>
               )}
+              <CldUploadButton
+                uploadPreset="fjxgm0ta"
+                onUpload={(result, widget) => {
+                  console.log(result);
+                  setCloudinaryImages((prevstate) => [
+                    ...prevstate,
+                    result.info.url,
+                  ]);
+                  setBigImage(cloudinaryImages[0]);
+                  // console.log(widget);
+                }}
+              />
               <div {...getRootProps({})} className={classes.drop}>
                 <input {...getInputProps()} />
                 <div>
