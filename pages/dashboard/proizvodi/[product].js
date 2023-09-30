@@ -15,26 +15,6 @@ export default function Prozivod({ product, cathegories }) {
   );
 }
 
-// export async function getServerSideProps(context) {
-//   const slug = context.params.product;
-
-//   db.connectDb();
-//   let product = await Product.findOne({ slug: slug }).populate({
-//     path: "category",
-//     model: Cath,
-//   });
-//   let category = await Cath.find();
-
-//   db.disconnectDb();
-
-//   return {
-//     props: {
-//       product: JSON.parse(JSON.stringify(product)),
-//       cathegories: JSON.parse(JSON.stringify(category)),
-//     },
-//   };
-// }
-
 export async function getStaticProps(context) {
   const { params } = context;
   const slug = params.product;
@@ -45,8 +25,6 @@ export async function getStaticProps(context) {
     model: Cath,
   });
   let category = await Cath.find();
-
-  db.disconnectDb();
 
   return {
     props: {
