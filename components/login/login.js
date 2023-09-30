@@ -30,7 +30,7 @@ export default function LogIn() {
     <div className={classes.login}>
       <form>
         <div>
-          <Image src={Logo} />
+          <Image src={Logo} alt="NitNis Logo" />
         </div>
         <label>
           <span>Email</span>

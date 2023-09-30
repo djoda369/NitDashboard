@@ -4,7 +4,6 @@ import Navbar from "@/components/navbar/navbar";
 import Cath from "@/models/Category";
 import db from "@/helpers/db";
 
-
 export default function Upload({ cathegories }) {
   const sortedCategories = cathegories.sort(function (a, b) {
     if (a.name < b.name) {
@@ -24,7 +23,7 @@ export default function Upload({ cathegories }) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getStaticProps(params) {
   db.connectDb();
   let category = await Cath.find();
   db.disconnectDb();
@@ -33,5 +32,6 @@ export async function getServerSideProps(context) {
     props: {
       cathegories: JSON.parse(JSON.stringify(category)),
     },
+    revalidate: 600,
   };
 }

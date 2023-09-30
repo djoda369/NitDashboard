@@ -14,7 +14,7 @@ export default function Prozivodi({ products, cathegories }) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getStaticProps(params) {
   db.connectDb();
   let products = await Product.find().populate({
     path: "category",
@@ -28,5 +28,6 @@ export async function getServerSideProps(context) {
       products: JSON.parse(JSON.stringify(products)),
       cathegories: JSON.parse(JSON.stringify(category)),
     },
+    revalidate: 60,
   };
 }

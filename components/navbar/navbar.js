@@ -31,7 +31,7 @@ export default function Navbar() {
       <div className={classes.container}>
         <div className={classes.options}>
           {/* <span>NitNis</span> */}
-          <img src="../../logo/NitLogoSmall.png" alt="logo" />
+          <img src="../../logo/NitLogo1.png" alt="logo" />
           <div className={classes.options__links}>
             <Link href="/dashboard">
               <p style={dashboardActive ? { backgroundColor: "#4b358d" } : {}}>
@@ -42,12 +42,14 @@ export default function Navbar() {
             <Link href="/dashboard/proizvodi">
               <p style={prozivodiActive ? { backgroundColor: "#4b358d" } : {}}>
                 <PiFilesDuotone />
-                Prozivodi
+                Proizvodi
               </p>
             </Link>
-            <p>
-              <BsCartCheck /> Porudzbine
-            </p>
+            <Link href="/dashboard/porudzbine">
+              <p>
+                <BsCartCheck /> Porudzbine
+              </p>
+            </Link>
             <Link href="/dashboard/dodaj-proizvod">
               <p style={uploadActive ? { backgroundColor: "#4b358d" } : {}}>
                 <MdOutlineNoteAdd /> Dodaj proizvod

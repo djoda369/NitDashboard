@@ -4,10 +4,16 @@ import { getSession } from "next-auth/react";
 import LogIn from "@/components/login/login";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export default function Home() {
   const { data: session, status } = useSession();
-  // console.log(session, status);
+  useEffect(() => {
+    if (session) {
+      router.replace("/dashboard");
+    }
+  }, [session]);
+  console.log(session, status);
   const router = useRouter();
 
   if (session) {
