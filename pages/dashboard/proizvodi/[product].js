@@ -19,7 +19,7 @@ export async function getStaticProps(context) {
   const { params } = context;
   const slug = params.product;
 
-  db.connectDb();
+  await db.connectDb();
   let product = await Product.findOne({ slug: slug }).populate({
     path: "category",
     model: Cath,
@@ -36,7 +36,7 @@ export async function getStaticProps(context) {
 }
 
 export async function getStaticPaths() {
-  db.connectDb();
+  await db.connectDb();
   const path = await paths.getPaths();
 
   return {
