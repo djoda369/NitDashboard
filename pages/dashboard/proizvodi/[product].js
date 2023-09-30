@@ -3,6 +3,7 @@ import Navbar from "@/components/navbar/navbar";
 import Product from "@/models/Products";
 import db from "@/helpers/db";
 import Cath from "@/models/Category";
+import paths from "@/helpers/paths";
 import Proizvod from "@/components/prozivodUpdate";
 
 export default function Prozivod({ product, cathegories }) {
@@ -14,8 +15,29 @@ export default function Prozivod({ product, cathegories }) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const slug = context.params.product;
+// export async function getServerSideProps(context) {
+//   const slug = context.params.product;
+
+//   db.connectDb();
+//   let product = await Product.findOne({ slug: slug }).populate({
+//     path: "category",
+//     model: Cath,
+//   });
+//   let category = await Cath.find();
+
+//   db.disconnectDb();
+
+//   return {
+//     props: {
+//       product: JSON.parse(JSON.stringify(product)),
+//       cathegories: JSON.parse(JSON.stringify(category)),
+//     },
+//   };
+// }
+
+export async function getStaticProps(context) {
+  const { params } = context;
+  const slug = params.product;
 
   db.connectDb();
   let product = await Product.findOne({ slug: slug }).populate({
@@ -31,5 +53,16 @@ export async function getServerSideProps(context) {
       product: JSON.parse(JSON.stringify(product)),
       cathegories: JSON.parse(JSON.stringify(category)),
     },
+    revalidate: 30,
+  };
+}
+
+export async function getStaticPaths() {
+  db.connectDb();
+  const path = await paths.getPaths();
+
+  return {
+    paths: path,
+    fallback: "blocking",
   };
 }
