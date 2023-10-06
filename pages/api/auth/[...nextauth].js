@@ -25,7 +25,7 @@ export default NextAuth({
         if (user) {
           return SignInUser({ password, user });
         } else {
-          throw new Error("This email does not exist.");
+          throw new Error("Wrong email or password.");
         }
       },
     }),

@@ -1,5 +1,5 @@
 import classes from "./styles.module.scss";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import Logo from "../../public/logo/NitLogo1.png";
@@ -8,6 +8,8 @@ export default function LogIn() {
   const usernameInputRef = useRef();
   const passwordInputRef = useRef();
   const emailInputRef = useRef();
+  const [error, setError] = useState("");
+  const [seeError, setSeeError] = useState(false);
 
   async function submitHandler(e) {
     e.preventDefault();
@@ -24,6 +26,12 @@ export default function LogIn() {
     });
 
     console.log(result);
+    if (result.status === 401) {
+      setSeeError(true);
+      setError(result.error);
+    }
+    setSeeError(false);
+    setError("");
   }
 
   return (
@@ -48,8 +56,10 @@ export default function LogIn() {
             ref={passwordInputRef}
           />
         </label>
+
         <button onClick={submitHandler}>Log In</button>
       </form>
+      <p className={classes.error}>{error}</p>
     </div>
   );
 }
