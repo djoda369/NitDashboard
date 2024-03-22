@@ -19,8 +19,10 @@ const OrderSchema = new mongoose.Schema(
     product: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "shoe",
+      ref: "Product",
     },
+    completed: { type: Boolean, default: false },
+    date: { type: Date, default: new Date() },
   },
   {
     timestamps: true,

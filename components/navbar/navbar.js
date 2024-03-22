@@ -50,6 +50,11 @@ export default function Navbar() {
                 <BsCartCheck /> Porudzbine
               </p>
             </Link>
+            <Link href="/dashboard/upiti">
+              <p>
+                <BsCartCheck /> Upiti
+              </p>
+            </Link>
             <Link href="/dashboard/dodaj-proizvod">
               <p style={uploadActive ? { backgroundColor: "#4b358d" } : {}}>
                 <MdOutlineNoteAdd /> Dodaj proizvod
