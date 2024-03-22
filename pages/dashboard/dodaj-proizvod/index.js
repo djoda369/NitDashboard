@@ -26,7 +26,6 @@ export default function Upload({ cathegories }) {
 export async function getStaticProps(params) {
   db.connectDb();
   let category = await Cath.find();
-  db.disconnectDb();
 
   return {
     props: {
