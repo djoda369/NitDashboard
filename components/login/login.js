@@ -25,7 +25,6 @@ export default function LogIn() {
       password: enteredPassword,
     });
 
-    console.log(result);
     if (result.status === 401) {
       setSeeError(true);
       setError(result.error);

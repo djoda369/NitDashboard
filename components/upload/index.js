@@ -392,8 +392,7 @@ export default function UploadMain({ cathegories }) {
     if (cloudinaryImages.length === 0) {
       setImageFail(true);
       setImageFailError("Došlo je do greške! Pokušajte ponovo.");
-      console.log("OVO");
-      console.log(imageFail);
+
       return;
     }
 
@@ -471,10 +470,7 @@ export default function UploadMain({ cathegories }) {
       setError("");
 
       // window.location.reload();
-
-      console.log(response);
     } catch (error) {
-      console.log(error);
       setViewError(true);
       setError(error.response.data.message);
     }
@@ -708,7 +704,6 @@ export default function UploadMain({ cathegories }) {
                 className={classes.containerBtn}
                 uploadPreset="fjxgm0ta"
                 onUpload={(result, widget) => {
-                  console.log(result);
                   setCloudinaryImages((prevstate) => [
                     ...prevstate,
                     result.info.url,
@@ -825,7 +820,6 @@ export default function UploadMain({ cathegories }) {
                 className={classes.containerBtn}
                 uploadPreset="fjxgm0ta"
                 onUpload={(result) => {
-                  console.log(result);
                   setCloudinaryImages((prevstate) => [
                     ...prevstate,
                     result.info.url,

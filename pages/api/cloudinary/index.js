@@ -27,7 +27,7 @@ handler.post(async (req, res) => {
     const { path } = req.body;
     let files = Object.values(req.files).flat();
     let images = [];
-    console.log(path);
+
     for (const file of files) {
       const img = await uploadToCloudinaryHandler(file, path);
       images.push(img);
@@ -35,7 +35,6 @@ handler.post(async (req, res) => {
     }
     res.json(images);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 });
@@ -58,7 +57,7 @@ const uploadToCloudinaryHandler = async (file, path) => {
       (err, res) => {
         if (err) {
           removeTmp(file.tempFilePath);
-          console.log(err);
+
           return res.status(400).json({ message: "Upload image failed." });
         }
         resolve({

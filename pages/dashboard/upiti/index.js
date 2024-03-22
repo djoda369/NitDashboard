@@ -34,9 +34,7 @@ export default function Prozivodi({ calls }) {
       });
 
       setCallsState(updatedColumnState);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const columns = [

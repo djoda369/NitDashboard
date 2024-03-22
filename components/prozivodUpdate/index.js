@@ -17,9 +17,9 @@ export default function Proizvod({ cathegories, card }) {
     ...card,
     mainImage: card.images[0],
   });
-  console.log(product);
+
   const [allImages, setAllImages] = useState(product.images);
-  console.log(allImages);
+
   const [isFeatured, setIsFeatured] = useState(product.featured);
   const [exclusive, setExclusive] = useState(product.exclusive);
   const [limited, setLimited] = useState(product.limited);
@@ -310,7 +310,6 @@ export default function Proizvod({ cathegories, card }) {
         setSucces(false);
         router.back();
       }, 1500);
-      console.log(response.data);
     } catch (error) {
       console.error("Error saving changes:", error);
     }

@@ -11,10 +11,6 @@ handler.put(async (req, res) => {
     const availabilityId = req.query.availabilityId; // Pretpostavljamo da ID dostupnosti dolazi preko URL-a
     const updatedAvailability = req.body;
 
-    console.log(availabilityId);
-
-    console.log(updatedAvailability);
-
     const result = await Avalablity.findByIdAndUpdate(
       availabilityId,
       updatedAvailability,
@@ -22,8 +18,6 @@ handler.put(async (req, res) => {
         new: true, // Opcija koja vraća ažurirani dokument
       }
     );
-
-    console.log(result);
 
     if (!result) {
       res.status(404).json({ message: "Availability not found" });

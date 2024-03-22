@@ -33,9 +33,7 @@ export default function Kartica({ card, cathegories }) {
     try {
       const response = await axios.delete(`/api/proizvod/delete/${card._id}`);
       router.reload();
-      console.log(response.data);
     } catch (error) {
-      console.log(error);
       setError("Došlo je do greške pokušajte ponovo!");
     }
   };

@@ -33,9 +33,7 @@ export default function Porudzbine({ orders }) {
       });
 
       setColumnState(updatedColumnState);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const columns = [
