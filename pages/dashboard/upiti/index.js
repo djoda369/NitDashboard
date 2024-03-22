@@ -116,7 +116,6 @@ export async function getStaticProps() {
       model: Product,
     })
     .sort("-date");
-  db.disconnectDb();
 
   return {
     props: {

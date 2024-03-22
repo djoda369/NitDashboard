@@ -21,7 +21,6 @@ export async function getStaticProps(params) {
     model: Cath,
   });
   let category = await Cath.find();
-  db.disconnectDb();
 
   return {
     props: {
